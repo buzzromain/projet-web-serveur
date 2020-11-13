@@ -13,6 +13,9 @@ Avant de saisir ces commandes, se placer dans le répertoire où l'on souhaite r
 
 -------------------
 Ne pas utiliser ces commandes dans l'immédiat.
+### Recupérer les dernières modifications sur le depôt
+    make git-pull
+    
 ### Commit une modification du code source en developpement
     make git m="description_modification"
 
