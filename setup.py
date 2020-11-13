@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-    name='buzzromain-blog',
-    packages=['buzzromainblog'],
+    name='projet-web-serveur',
+    packages=['blog'],
     include_package_data=True,
     install_requires=[
         'flask',

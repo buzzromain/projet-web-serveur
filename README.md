@@ -1,8 +1,12 @@
+# Projet web serveur
+Projet realisé dans le cadre de nos études en Licence Informatique à l'Université Clermont Auvergne
+Auteur : Romain G. / Nicolas D.
+
 ## Commande
 Avant de saisir ces commandes, se placer dans le répertoire où l'on souhaite récuperer le dépôt.
 ### Recupérer le dépôt
-    git clone https://github.com/buzzromain/buzzromain-blog.git
-    cd buzzromain-blog
+    git clone https://github.com/buzzromain/projet-web-serveur.git
+    cd projet-web-serveur
 
 ### Initialiser l'environnement de développement
     make init-dev

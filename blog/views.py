@@ -1,4 +1,4 @@
-from buzzromainblog import app
+from blog import app
 
 @app.route('/')
 def hello_world():
