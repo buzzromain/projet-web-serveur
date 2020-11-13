@@ -1,4 +1,5 @@
 ## Commande
+Avant de saisir ces commandes, se placer dans le répertoire où l'on souhaite récuperer le dépôt.
 ### Recupérer le dépôt
     git clone https://github.com/buzzromain/buzzromain-blog.git
     cd buzzromain-blog
@@ -7,9 +8,11 @@
     make init-dev
     source venv/bin/activate
 
-### Démarrer le serveur en mode développement
+### Démarrer le serveur en développement
     make run-dev
 
+-------------------
+Ne pas utiliser ces commandes dans l'immédiat.
 ### Commit une modification du code source en developpement
     make git m="description_modification"
 
