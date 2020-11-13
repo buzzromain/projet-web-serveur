@@ -1,5 +1,7 @@
 git:
 	git checkout master; git add -A .; git commit -a -m "$m"; git push --set-upstream origin master;
+git-pull:
+	git pull origin master; git pull origin PRODUCTION;
 deploy:
 	git checkout PRODUCTION; git merge master; git push --set-upstream origin PRODUCTION; git checkout master;
 init-dev:
