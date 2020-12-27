@@ -21,16 +21,16 @@ class Comment:
         body: str,
         author: User,
         post: Post,
-        parent_comment: Optional[Comment],
+        child_comment: Optional[Comment],
         ) -> None:
         """
         Constructeur de la classe 
         """
 
         self.__body: str = body
-        self.__author: User = author
-        self.__post: Post = post
-        self.__parent_comment: Optional[Comment] = parent_comment
+        self.author: User = author
+        self.post: Post = post
+        self.child_comment: Optional[Comment] = child_comment
 
     @classmethod
     def create_new_comment(cls, body: str, author: User, post: Post) -> Comment:
@@ -42,7 +42,7 @@ class Comment:
             body=body,
             author=author,
             post=post,
-            parent_comment=None,
+            child_comment=None,
         )
         
     @property
@@ -60,27 +60,3 @@ class Comment:
         """
         
         self.__body = new_body
-
-    @property
-    def author(self) -> User:
-        """
-        Obtenir l'auteur du commentaire.
-        """
-
-        return self.__author
-
-    @property
-    def post(self) -> Post:
-        """
-        Obtenir le post du commentaire.
-        """
-
-        return self.__post
-
-    @property
-    def parent_comment(self) -> Optional[Comment]:
-        """
-        Obtenir le parent du commentaire (pour gérer commentaire imbriquée).
-        """
-
-        return self.__parent_comment

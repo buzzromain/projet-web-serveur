@@ -29,8 +29,8 @@ class Post:
 
         self.__title: str = title
         self.__body: str = body
-        self.__author: User = author
-        self.__comments: Optional[List[Comment]] = comments
+        self.author: User = author
+        self.comments: Optional[List[Comment]] = comments
 
     @classmethod
     def create_new_post(cls, title: str, body: str, author: User) -> Post:
@@ -76,19 +76,3 @@ class Post:
         """
 
         self.__body = new_body
-
-    @property
-    def author(self) -> User:
-        """
-        Obtenir l'auteur du post.
-        """
-
-        return self.__author
-
-    @property
-    def comments(self) -> Optional[List[Comment]]:
-        """
-        Obtenir la liste de commentaires.
-        """
-
-        return self.__comments

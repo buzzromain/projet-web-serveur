@@ -1,13 +1,19 @@
 from sqlalchemy import Table, MetaData, Column, Integer, String, Boolean, DateTime, ForeignKey
 from sqlalchemy.orm import mapper, relationship, synonym
-from .database import metadata, db_session
+from .connection import metadata, db_session
 from ..models import User, Post, Comment
 from datetime import datetime
 import uuid
 
 def generate_unique_id():
+    """
+    Genere un identifiant unique.
+    """
     return str(uuid.uuid1())
 
+"""
+Définit la table user
+"""
 user = Table('user', metadata,
             Column('id', String, default=generate_unique_id, primary_key=True),
             Column('username', String(30), unique=True, nullable=False),
@@ -18,6 +24,9 @@ user = Table('user', metadata,
             Column('updated_at', DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
         )
 
+"""
+Définit la table post
+"""
 post = Table('post', metadata,
             Column('id', String, default=generate_unique_id, primary_key=True),
             Column('title', String(200), unique=True, nullable=False),
@@ -27,6 +36,9 @@ post = Table('post', metadata,
             Column('author_id', String, ForeignKey('user.id'), nullable=False)
         )
 
+"""
+Définit la table comment
+"""
 comment = Table('comment', metadata,
             Column('id', String, default=generate_unique_id, primary_key=True),
             Column('body', String, nullable=False),
@@ -37,7 +49,11 @@ comment = Table('comment', metadata,
             Column('updated_at', DateTime, default=datetime.now, onupdate=datetime.now, nullable=False)
         )
 
+
 def start_mappers():
+    """
+    Lie les classes du modèles aux tables de la base de données.
+    """
     mapper(User, user, properties={
         'posts': relationship(Post, backref="author"),
         'username': synonym(
@@ -63,7 +79,9 @@ def start_mappers():
     })
 
     mapper(Post, post, properties={
-        'comments': relationship(Comment, backref="post"),
+        'comments': relationship(Comment, 
+            backref="post",
+        ),
         'title': synonym(
             "_Post__title", 
             map_column=True,
@@ -78,10 +96,10 @@ def start_mappers():
 
     mapper(Comment, comment, properties={
         'author': relationship(User),
-        'parent_comment': relationship(Comment),
+        'child_comment': relationship(Comment, uselist=False),
         'body': synonym(
             "_Comment__body", 
             map_column=True,
             descriptor=Comment.body
-        )
+        ),
     })

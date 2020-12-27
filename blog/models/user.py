@@ -32,7 +32,7 @@ class User:
         self.__password_hash: str = password_hash
         self.__is_admin: bool = is_admin
         self.__is_banned: bool = is_banned
-        self.__posts: Optional[List[Post]] = posts
+        self.posts: Optional[List[Post]] = posts
 
     @classmethod
     def create_new_user(
@@ -51,7 +51,7 @@ class User:
             password_hash=hashlib.sha512(password.encode("utf-8")).hexdigest(),
             is_admin=is_admin,
             is_banned=is_banned,
-            posts=None
+            posts=list()
         )
 
     @property
@@ -109,14 +109,6 @@ class User:
         """
 
         return self.__password_hash
-
-    @property
-    def posts(self) -> Optional[List[Post]]:
-        """
-        Obtenir une liste de posts de l'utilisateur.
-        """
-
-        return self.__posts
 
     def set_password(self, new_password: str) -> None:
         """

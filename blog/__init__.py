@@ -1,10 +1,11 @@
 from config import BaseConfig
 from flask import Flask
-from blog.database import db_session, start_mappers, init_db
+from blog.data_access import db_session, start_mappers, init_db
+from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.from_object(BaseConfig)
-app.config['JSON_SORT_KEYS'] = False
+jwt = JWTManager(app)
 
 init_db()
 start_mappers()
