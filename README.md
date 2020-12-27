@@ -27,7 +27,7 @@ Ne pas utiliser ces commandes dans l'immédiat.
     make deploy m="description_version"
 
 ### A faire
-- [ ] Modeliser base de données SQL
-- [ ] Creer le connecteur pour la base de données
-- [ ] Creer les controleur
-- [ ] Creer les vues
+- [ ] Gérer les exceptions/code de status HTTP
+- [ ] Ajouter la modification de ressource "UPDATE"
+- [ ] Faire l'interface en HTML/CSS/JS
+- [ ] Vérifier le code source
