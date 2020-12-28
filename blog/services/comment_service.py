@@ -1,6 +1,6 @@
 from blog.data_access import db_session
 from blog import models
-from .exceptions import ResourceNotFound
+from .exceptions import ResourceNotFound, UnauthorizedUser
 
 class CommentService:
     @staticmethod
@@ -12,19 +12,25 @@ class CommentService:
         if post is None:
             raise ResourceNotFound("Resource not found")
         user = db_session.query(models.User).get(user_id)
+        if user.is_banned:
+            raise UnauthorizedUser("User is not authorized")
         comment = models.Comment.create_new_comment(body, user, post)
         db_session.add(comment)
         db_session.commit()
         return comment
 
     @staticmethod
-    def get_comment_by_id(post_id, id):
+    def get_comment_by_id(post_id, comment_id):
         """
         Obtenir un commentaire à partir de son identifiant.
         """
-        comment = db_session.query(models.Comment).filter(
-            models.Comment.post_id==post_id and models.Comment.id==id
-        ).one()
+        try:
+            comments = db_session.query(models.Comment).filter(
+                models.Comment.post_id==post_id, models.Comment.id==comment_id
+            ).all()
+            comment = comments[0]
+        except:
+            comment = None
 
         if comment is None:
             raise ResourceNotFound("Resource not found")
@@ -41,20 +47,52 @@ class CommentService:
             models.Comment.post_id==post_id
         ).all()
 
-        if comments is None:
-            raise ResourceNotFound("Resource not found")
-
         return comments
 
     @staticmethod
-    def delete_comment(post_id, id):
+    def update_comment(new_body, post_id, comment_id, user_id):
+        """
+        Mettre à jour un commentaire à partir de son identifiant.
+        """
+        try:
+            comments = db_session.query(models.Comment).filter(
+                models.Comment.post_id==post_id, models.Comment.id==comment_id
+            ).all()
+            comment = comments[0]
+        except:
+            comment = None
+
+        if comment is not None:
+            user = db_session.query(models.User).get(user_id)
+            if user.is_banned and user.id == user_id:
+                raise UnauthorizedUser("User is not authorized")
+            else:
+                comment.body = new_body
+                db_session.commit()
+                return comment
+        else:
+            raise ResourceNotFound("Resource not found")
+
+
+    @staticmethod
+    def delete_comment(post_id, comment_id, user_id):
         """
         Supprimer un commentaire à partir de son identifiant.
         """
-        nb_comment = db_session.query(models.Comment).filter(models.Comment.post_id==post_id and models.Comment.id==id).delete()
-        db_session.commit()
+        try:
+            comments = db_session.query(models.Comment).filter(
+                models.Comment.post_id==post_id, models.Comment.id==comment_id
+            ).all()
+            comment = comments[0]
+        except:
+            comment = None
 
-        if nb_comment == 1:
-            return True
+        if comment is not None:
+            if comment.author.id == user_id:
+                db_session.delete(comment)
+                db_session.commit()
+                return True
+            else:
+                raise UnauthorizedUser("User is not authorized")
         else:
-            return False
+            raise ResourceNotFound("Resource not found")

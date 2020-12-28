@@ -1,6 +1,6 @@
 from blog.data_access import db_session
 from blog import models
-from .exceptions import ResourceNotFound
+from .exceptions import ResourceNotFound, UnauthorizedUser
 
 class PostService:
     @staticmethod
@@ -9,9 +9,12 @@ class PostService:
         Créer un post
         """
         user = db_session.query(models.User).get(author_id)
-        post = models.Post.create_new_post(title, body, user)
-        db_session.add(post)
-        db_session.commit()
+        if user.is_admin:
+            post = models.Post.create_new_post(title, body, user)
+            db_session.add(post)
+            db_session.commit()
+        else:
+            raise UnauthorizedUser("User is not admin")
         return post
 
     @staticmethod
@@ -32,15 +35,38 @@ class PostService:
         return db_session.query(models.Post).all()
 
     @staticmethod
-    def delete_post(id):
+    def update_post_by_id(new_title, new_body, id, user_id):
+        """
+        Mettre à jour un post du blog
+        """
+        user = db_session.query(models.User).get(user_id)
+        if user.is_admin:
+            post = db_session.query(models.Post).get(id)
+            if post is not None:
+                post.title = new_title
+                post.body = new_body
+                db_session.commit()
+                return post
+            else:
+                raise ResourceNotFound("Resource not found")
+        else:
+            raise UnauthorizedUser("User is not authorized")
+        
+
+    @staticmethod
+    def delete_post(id, user_id):
         """
         Supprimer un post à partir de son identifiant
         """
         post = db_session.query(models.Post).get(id)
-        if post is None:
+        if post is not None:
+            user = db_session.query(models.User).get(user_id)
+            if user.is_admin == False:
+                raise UnauthorizedUser("User not authorized")
+            for comment in post.comments:
+                db_session.delete(comment)
+            db_session.delete(post)
+            db_session.commit()
+            return True
+        else:
             raise ResourceNotFound("Resource not found")
-        for comment in post.comments:
-            db_session.delete(comment)
-        db_session.delete(post)
-        db_session.commit()
-        return True

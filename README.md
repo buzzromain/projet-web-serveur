@@ -27,7 +27,7 @@ Ne pas utiliser ces commandes dans l'immédiat.
     make deploy m="description_version"
 
 ### A faire
-- [ ] Gérer les exceptions/code de status HTTP
-- [ ] Ajouter la modification de ressource "UPDATE"
+- [X] Gérer les exceptions/code de status HTTP
+- [X] Ajouter la modification de ressource "UPDATE"
 - [ ] Faire l'interface en HTML/CSS/JS
-- [ ] Vérifier le code source
+- [ ] Relire le code source en entier
