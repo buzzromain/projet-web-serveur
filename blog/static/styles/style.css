@@ -1,0 +1,13 @@
+#footer {
+    min-height: 56px;
+    line-height: 56px;
+}
+
+#dark-theme-pill {
+    bottom: 1rem;
+    left: 1rem;
+}
+
+.comment-body {
+    margin-bottom: 0px;
+}

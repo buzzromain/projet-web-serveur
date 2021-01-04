@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main role="main" class="container full-height flex-row flex-grow-1">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="/posts">Articles</a></li>
+        <li class="breadcrumb-item"><a href="/posts/{{comment['post']['id']}}">{{comment['post']['title']}}</a></li>
+        <li class="breadcrumb-item"><a href="/posts/{{comment['post']['id']}}/comments">Commentaires</a></li>
+        <li class="breadcrumb-item">Commentaire</li>
+    </ol>
+    <div class="shadow p-3 mb-3 bg-white rounded comments-container">
+        <div class="d-flex justify-content-between comment-meta-container">
+            <span><a href="/users/{{comment.author.id}}">{{ comment.author.username }}</a><small> <i>
+                        {{ comment.created_at.strftime("le %d %B %Y")}}</i></small></span>
+        </div>
+        <p class="comment-body">{{ comment.body }}</p>
+    </div>
+</main>
+
+{% endblock %}

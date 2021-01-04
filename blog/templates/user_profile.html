@@ -1,0 +1,49 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main role="main" class="container full-height flex-row flex-grow-1">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+        <li class="breadcrumb-item active">Profil de {{user_profile.username}}</li>
+    </ol>
+
+    <div class="card w-100 mb-2" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">{{user_profile.username}}</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Administrateur
+                    <span class="badge bg-primary rounded-pill">
+                        {% if user_profile.is_admin == True %}
+                        Oui
+                        {% else %}
+                        Non
+                        {% endif %}
+                    </span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Nombre d'articles
+                    <span class="badge bg-primary rounded-pill">{{ user_profile.posts|length }}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% if user_profile.is_admin == True %}
+    <div class="container shadow-lg p-3 bg-white rounded">
+        <h3 class="font-weight-bold"><i class="fas fa-newspaper"></i> Articles</h3>
+        {% for post in user_profile.posts %}
+        <div class="card w-100 mb-2">
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <p class="card-text">{{ post.body[:500] }}</p>
+                <p class="card-text"><small class="text-muted">{{ post.created_at.strftime("Le %d %B %Y")}} par <a
+                            href="/users/{{user_profile.username}}">{{user_profile.username}}</a></small></p>
+
+                <a href="/posts/{{ post.id }}" role="button" class="btn btn-sm btn-primary">Lire l'article</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</main>
+{% endblock %}

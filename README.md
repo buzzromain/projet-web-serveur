@@ -29,5 +29,6 @@ Ne pas utiliser ces commandes dans l'immédiat.
 ### A faire
 - [X] Gérer les exceptions/code de status HTTP
 - [X] Ajouter la modification de ressource "UPDATE"
-- [ ] Faire l'interface en HTML/CSS/JS
+- [X] Faire l'interface en HTML/CSS/JS
+- [ ] Ajouter de nouvelles fonctionnalités
 - [ ] Relire le code source en entier

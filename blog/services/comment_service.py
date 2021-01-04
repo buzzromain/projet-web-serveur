@@ -88,7 +88,9 @@ class CommentService:
             comment = None
 
         if comment is not None:
-            if comment.author.id == user_id:
+            user = db_session.query(models.User).get(user_id)
+
+            if comment.author.id == user.id or user.is_admin:
                 db_session.delete(comment)
                 db_session.commit()
                 return True

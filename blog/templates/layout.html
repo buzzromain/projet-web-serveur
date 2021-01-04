@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-theme.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+    <title>{% block title %}{% endblock %} - Blog</title>
+</head>
+
+<body class="d-flex flex-column min-vw-100 min-vh-100">
+    <header class="flex-row w-100">
+        <nav class="navbar navbar-expand-sm navbar-light bg-light nav-fill w-100">
+            <div class="container-fluid  w-100">
+                <a href="/" class="navbar-brand"><b>Blog</b></a>
+                <button type="button" class="navbar-toggler custom-toggler" data-toggle="collapse"
+                    data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div id="navbarCollapse" class="collapse navbar-collapse justify-content-start">
+                    <div class="navbar-nav">
+                        <a href="/" class="nav-item nav-link">Accueil</a>
+                        <a href="/posts" class="nav-item nav-link">Articles</a>
+                    </div>
+                    {% if current_connected_user %}
+                    <div class="navbar-nav ml-auto">
+                        <div class="nav-item dropdown">
+                            <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle user-action"
+                                aria-expanded="false">{{ current_connected_user.username }} <b class="caret"></b></a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="/users/{{ current_connected_user.id }}" class="dropdown-item"><i class="fa fa-user-o"></i> Mon profil</a>
+                                {% if current_connected_user.is_admin %}
+                                <a href="/posts/create" class="dropdown-item"><i class="fas fa-plus"></i> Créer un
+                                    article</a>
+                                {% endif %}
+                                <div class="dropdown-divider"></div>
+                                <a href="/auth/logout" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="navbar-nav ml-auto action-buttons">
+                        <a href="/auth/login" class="btn btn-outline-primary mr-sm-2" role="button"><i
+                                class="fas fa-sign-in-alt"></i> Se connecter</a>
+                        <a href="/auth/signup" class="btn btn-primary" role="button"><i class="fas fa-user-plus"></i>
+                            S'inscrire</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+    {% block content %}{% endblock %}
+    <footer class="footer bg-light" id="footer">
+        <div class="container d-flex justify-content-between">
+            <span class="text-muted">Projet web-serveur</span>
+            <span class="text-muted">2020</span>
+        </div>
+    </footer>
+    <div class="position-fixed py-2 px-3 bg-dark text-white rounded-pill" id="dark-theme-pill">
+        <div class="form-check form-switch pull-right">
+            <input class="form-check-input" type="checkbox" id="dark-theme">
+            <label id="dark-theme-label" for="dark-theme">Clair</label>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/4aeecce31c.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='scripts/jquery-3.5.1.js') }}"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/moment-with-locales.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/dark-theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/app.js') }}"></script>
+</body>
+
+</html>

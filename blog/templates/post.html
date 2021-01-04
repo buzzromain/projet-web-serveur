@@ -1,0 +1,139 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main role="main" class="container full-height flex-row flex-grow-1">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="/posts">Articles</a></li>
+        <li class="breadcrumb-item active">{{ post.title }}</li>
+    </ol>
+    <div class="shadow-lg p-3 mb-4 bg-white rounded" }>
+        <h1 class="font-weight-bold" id="post-title">{{ post.title }}</h1>
+
+        <div class="d-flex justify-content-between">
+            <small><i>{{ post.created_at.strftime("Le %d %B %Y")}} par <a
+                        href="/users/{{ post.author.id }}">{{ post.author.username }}</a></i></small>
+            {% if current_connected_user.is_admin %}
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger btn-sm" id="delete-post-button" data-toggle="modal"
+                    data-target="#delete-post-modal"><i class="fas fa-trash-alt fa-sm"></i></button>
+                <button type="button" class="btn btn-primary btn-sm" id="edit-post-button" data-toggle="modal"
+                    data-target="#edit-post-modal"><i class="fas fa-edit fa-sm"></i></button>
+            </div>
+            {% endif %}
+        </div>
+        <hr />
+        <p class="font-weight-normal" id="post-body">
+            {{ post.body }}
+        </p>
+    </div>
+    <div>
+        <div id="comments" class="container shadow-lg p-3 bg-white rounded mb-4">
+            <div class="d-flex justify-content-between comment-meta-container">
+                <h3 class="font-weight-bold"><i class="far fa-comments"></i> Commentaires</h3>
+                <a role="button" href="/posts/{{post.id}}/comments" class="btn btn-secondary btn-sm"><i
+                        class="fas fa-external-link-alt"></i></a>
+            </div>
+            {% for comment in post.comments %}
+            <div class="shadow p-3 mb-3 bg-white rounded comments-container">
+                <div class="d-flex justify-content-between comment-meta-container">
+                    <span><a href="/users/{{comment.author.id}}">{{ comment.author.username }}</a><small> <i>
+                                {{ comment.created_at.strftime("le %d %B %Y")}}</i></small></span>
+                    <div class="btn-group">
+                        <a role="button" href="/posts/{{post.id}}/comments/{{comment.id}}"
+                            class="btn btn-secondary btn-sm"><i class="fas fa-external-link-alt"></i></a>
+                        {% if (current_connected_user.username == comment.author.username) or (current_connected_user.is_admin == True)%}
+                        <button type="button" data-uri="/posts/{{post.id}}/comments/{{comment.id}}"
+                            class="btn btn-danger btn-sm delete-comment-button"><i
+                                class="fas fa-trash-alt fa-sm"></i></button>
+                        {% if current_connected_user.username == comment.author.username%}
+                        <button type="button" data-uri="/posts/{{post.id}}/comments/{{comment.id}}"
+                            class="btn btn-primary btn-sm edit-comment-button"><i
+                                class="fas fa-edit fa-sm"></i></button>
+                        {% endif %}
+                        {% endif %}
+                        {% if (current_connected_user.is_admin == True) and (comment.author.username != current_connected_user.username) %}
+                        <button type="button" class="btn btn-secondary btn-sm"><i
+                                class="fas fa-user-slash fa-sm"></i></button>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="comment-body">{{ comment.body }}</p>
+            </div>
+            {% endfor %}
+            {% if current_connected_user.is_banned == False %}
+            <form method="POST" action="/posts/{{ post.id }}/comments" id="create-comment-form"
+                class="shadow p-3 bg-white rounded">
+                <div class="form-group d-flex flex-column">
+                    <label for="comment">
+                        <h6>Ajouter un commentaire</h6>
+                    </label>
+                    <textarea class="form-control" placeholder="Ecrivez votre commentaire ici !" name="body"
+                        id="create-comment-body"></textarea>
+                    <button class="mt-1 btn btn-light" form="create-comment-form" type="submit"><i
+                            class="fas fa-paper-plane"></i>
+                        Envoyer</button>
+                </div>
+            </form>
+            {% elif current_connected_user.is_banned == True%}
+            <span>Vous êtes banni. Impossible de poster un commentaire.</span>
+            {% else %}
+            <span><a href="/auth/login">Connectez-vous</a> pour pouvoir poster un
+                commentaire</span>
+            {% endif %}
+        </div>
+    </div>
+</main>
+
+{% if current_connected_user.is_admin %}
+<div class="modal fade" id="delete-post-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Supprimer l'article</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Voulez-vous vraiment supprimer l'article ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non</button>
+                <button type="button" class="btn btn-danger" data-uri="/posts/{{ post.id }}"
+                    id="delete-post-button">Oui</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="edit-post-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen-xxl-down">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier l'article</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-post" data-uri="/posts/{{ post.id }}">
+                    <div class="mb-3">
+                        <label for="new-post-title" class="form-label">
+                            <h4>Titre</h4>
+                        </label>
+                        <input type="text" class="form-control" id="new-post-title" value="" name="title">
+                    </div>
+                    <div class="mb-3">
+                        <label for="new-post-body" class="form-label">
+                            <h4>Contenu</h4>
+                        </label>
+                        <textarea class="form-control" id="new-post-body" rows="20" name="body">
+                        </textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary" form='edit-post'>Valider</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

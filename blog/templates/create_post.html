@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main role="main" class="container full-height flex-row flex-grow-1">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+        <li class="breadcrumb-item"><a href="/posts">Articles</a></li>
+        <li class="breadcrumb-item active">Créer un nouvel article</li>
+    </ol>
+    <div class="shadow-lg p-3 mb-4 bg-white rounded">
+        <form action="/posts" method="POST" id="new-post-form">
+            <div class="mb-3">
+                <h1>Créer un nouvel article</h1>
+                <label for="post-title" class="form-label">
+                    <h4>Titre</h4>
+                </label>
+                <input type="text" class="form-control" id="post-title"
+                    placeholder="Ecrivez le titre de l'article" name="title">
+            </div>
+            <div class="mb-3">
+                <label for="post-content" class="form-label">
+                    <h4>Contenu</h4>
+                </label>
+                <textarea class="form-control" id="post-content" rows="20"
+                    placeholder="Ecrivez le contenu de l'article" name="body"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Publier</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
