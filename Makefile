@@ -7,4 +7,4 @@ deploy:
 init-dev:
 	virtualenv venv; source venv/bin/activate; pip3 install -r requirements.txt;
 run-dev:
-	export FLASK_ENV=development; export FLASK_APP=blog; pip3 install -e .; flask run;
+	export FLASK_ENV=development; export FLASK_APP=blog; source venv/bin/activate; python3 app.py;

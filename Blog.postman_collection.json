@@ -56,12 +56,12 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "buzzromain2",
+									"value": "buzzromain",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "coucou",
+									"value": "password",
 									"type": "text"
 								}
 							]
@@ -152,6 +152,38 @@
 							"port": "5000",
 							"path": [
 								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"is_banned\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:5000/users/df6b41ea-4e7f-11eb-8fad-3c15c2bc38f6",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "5000",
+							"path": [
+								"users",
+								"df6b41ea-4e7f-11eb-8fad-3c15c2bc38f6"
 							]
 						}
 					},
@@ -475,28 +507,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Test",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://127.0.0.1:5000/test_jwt",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "5000",
-					"path": [
-						"test_jwt"
-					]
-				}
-			},
-			"response": []
 		}
 	]
 }
