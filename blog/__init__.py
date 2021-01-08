@@ -14,4 +14,14 @@ start_mappers()
 def shutdown_session(exception=None):
     db_session.remove()
 
-from blog import views
+from blog.controllers.auth import auth_blueprint
+from blog.controllers.user import user_blueprint
+from blog.controllers.post import post_blueprint
+from blog.controllers.comment import comment_blueprint
+from blog.controllers.home import home_blueprint
+from blog.controllers import error
+app.register_blueprint(auth_blueprint)
+app.register_blueprint(user_blueprint)
+app.register_blueprint(post_blueprint)
+app.register_blueprint(comment_blueprint)
+app.register_blueprint(home_blueprint)

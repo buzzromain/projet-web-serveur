@@ -73,3 +73,27 @@ class UserService:
         Obtenir tous les utilisateurs
         """
         return db_session.query(models.User).all()
+
+    @staticmethod
+    def update_user(connected_user_id, user_id, json_patch):
+        """
+        Mettre à jour un utilisateur
+        """
+        connected_user = UserService.get_user_by_id(connected_user_id)  
+        user = UserService.get_user_by_id(user_id) 
+
+        if 'username' in json_patch:
+            user.username = json_patch['username']
+        if 'password' in json_patch:
+            user.password = json_patch['password']
+        if 'is_admin' in json_patch or 'is_banned' in json_patch:
+            if connected_user.is_admin == False:
+                raise UnauthorizedUser('User is not admin')
+            else:
+                if 'is_admin' in json_patch:
+                    user.is_admin = json_patch['is_admin']
+                if 'is_banned' in json_patch:
+                    user.is_banned = json_patch['is_banned']
+
+        db_session.commit()
+        return user

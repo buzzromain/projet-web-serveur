@@ -5,7 +5,7 @@
     class="container full-height flex-column flex-grow-1 justify-content-center d-flex">
     <div class="p-3 mb-4 rounded">
         <form class="form-signin text-center" action="/auth/login" method="POST" id="login-form">
-            <h1 class="h3 mb-3 font-weight-bold">Connectez-vous</h1>
+            <h1 class="h3 mb-3 font-weight-bold">{{ label }}</h1>
             <label for="username" class="sr-only">Nom d'utilisateur</label>
             <input type="text" id="username" class="form-control mb-2" placeholder="Nom d'utilisateur" name="username"
                 autofocus="" required>

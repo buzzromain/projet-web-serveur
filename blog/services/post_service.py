@@ -13,9 +13,9 @@ class PostService:
             post = models.Post.create_new_post(title, body, user)
             db_session.add(post)
             db_session.commit()
+            return post
         else:
             raise UnauthorizedUser("User is not admin")
-        return post
 
     @staticmethod
     def get_post_by_id(id):

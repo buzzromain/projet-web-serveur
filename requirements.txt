@@ -9,7 +9,7 @@ Jinja2==2.11.2
 MarkupSafe==1.1.1
 marshmallow==3.10.0
 marshmallow-sqlalchemy==0.24.1
--e git+https://github.com/buzzromain/projet-web-serveur.git@46675ef0f4779b2c9d7116667ea9868c71082af5#egg=projet_web_serveur
+-e git+https://github.com/buzzromain/projet-web-serveur.git@941df0b7ab922544d4e264df32a51b50913dabd1#egg=projet_web_serveur
 PyJWT==1.7.1
 six==1.15.0
 SQLAlchemy==1.3.20

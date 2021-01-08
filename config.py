@@ -14,12 +14,3 @@ class BaseConfig:
     JWT_TOKEN_LOCATION = ['cookies']
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_COOKIE_SECURE = False
-
-class DevelopementConfig(BaseConfig):
-    pass
-
-class TestingConfig(BaseConfig):
-    pass
-
-class ProductionConfig(BaseConfig):
-    pass

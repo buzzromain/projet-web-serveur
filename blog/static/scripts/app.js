@@ -27,7 +27,7 @@ $(() => {
                             <a role="button" href="/posts/${data.post.id}/comments/${data.id}" class="btn btn-secondary btn-sm"><i class="fas fa-external-link-alt"></i></a>
                             <button type="button" data-uri="/posts/${data.post.id}/comments/${data.id}" class="btn btn-danger btn-sm delete-comment-button" ><i class="fas fa-trash-alt fa-sm" aria-hidden="true"></i></button>
                             <button type="button" data-uri="/posts/${data.post.id}/comments/${data.id}" class="btn btn-primary btn-sm edit-comment-button"><i class="fas fa-edit fa-sm" aria-hidden="true"></i></button>
-                            ${$('a[href="/posts/create"]').length > 0 ? '<button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-user-slash fa-sm" aria-hidden="true"></i></button>': ''}
+                            ${$('a[href="/posts/create"]').length > 0 ? '': '<button type="button" class="btn btn-secondary btn-sm"><i class="fas fa-user-slash fa-sm" aria-hidden="true"></i></button>'}
                         </div>
     
                     </div>
@@ -143,7 +143,7 @@ $(() => {
         commentElm.append(`
         <textarea class="form-control" name="new-comment-body">
         </textarea>
-        <button type="button" class="btn btn-link btn-sm" id="cancel-edit-button">Annuler</button>
+        <button type="button" class="btn btn-light btn-sm" id="cancel-edit-button">Annuler</button>
         <button class="btn btn-primary btn-sm" id="edit-button-submit">Actualiser</button>
         `);
         commentElm.children('cancel-edit-button').on("click", (event) => {
@@ -234,10 +234,95 @@ $(() => {
         });
     }
 
+    function banUser() {
+        $.ajax({
+            url: $(this).attr('data-uri'),
+            type: 'PATCH',
+            dataType: 'json',
+            data: JSON.stringify({"is_banned": true}),
+            contentType: "application/json",
+            success: function (data) {
+                const successAlert = $(
+                `
+                    <div class="alert alert-success success-ban-user-alert" role="alert">
+                    Utilisateur banni avec succès
+                    </div>
+                `
+                )
+                successAlert.insertBefore("#create-comment-form");
+                
+                $(".success-ban-user-alert").delay(1500).slideUp(300, function () {
+                    $(this).alert('close');
+                });
+
+            },
+            error: function () {
+                const failAlert = $(
+                    `
+                        <div class="alert alert-danger fail-ban-user-alert" role="alert">
+                        Impossible de bannir cet utilisateur. Veuillez réessayer plus tard.
+                        </div>
+                    `
+                )
+                failAlert.insertBefore("#create-comment-form");
+                
+                $(".fail-ban-user-alert").delay(1500).slideUp(300, function () {
+                    $(this).alert('close');
+                });
+            }
+        });
+    }
+
+    function upgradeUser(event) {
+        event.preventDefault();
+        const username = $("#user-list").val();
+        const currentOption = $(`option[value=${username}`);
+        const userId = currentOption.attr('data-id');
+        console.log($(this));
+        $.ajax({
+            url: 'users/' + userId,
+            type: 'PATCH',
+            dataType: 'json',
+            data: JSON.stringify({"is_admin": true}),
+            contentType: "application/json",
+            success: function (data) {
+                const successAlert = $(
+                `
+                    <div class="alert alert-success success-upgrande-user-alert" role="alert">
+                    Changement de role de l'utilisateur avec succès.
+                    </div>
+                `
+                )
+                successAlert.insertAfter("#upgrade-user");
+                
+                $(".success-upgrande-user-alert").delay(1500).slideUp(300, function () {
+                    $(this).alert('close');
+                });
+                currentOption.remove();
+            },
+            error: function () {
+                const failAlert = $(
+                    `
+                        <div class="alert alert-danger fail-upgrade-user-alert" role="alert">
+                        Impossible de mettre cet utilisateur en tant qu'administrateur. Veuillez réessayer plus tard.
+                        </div>
+                    `
+                )
+                failAlert.insertAfter("#upgrade-user");
+                
+                $(".fail-upgrade-user-alert").delay(1500).slideUp(300, function () {
+                    $(this).alert('close');
+                });
+            }
+        });
+    }
+
     $("#create-comment-form").on("submit", createComment);
     $("#delete-post-button").on("click", deletePost);
     $("#edit-post-button").on("click", editPostButton);
     $("#edit-post").on("submit", editPost);
     $(".edit-comment-button").on('click', editComment);
     $(".delete-comment-button").on('click', deleteComment);
+    $(".ban-user-button").on('click', banUser);
+    $("#upgrade-user").on('submit', upgradeUser);
 });

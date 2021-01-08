@@ -8,7 +8,7 @@
     <link href="{{ url_for('static', filename='styles/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles/dark-theme.css') }}">
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
-    <title>{% block title %}{% endblock %} - Blog</title>
+    <title>{{ title }} - Blog</title>
 </head>
 
 <body class="d-flex flex-column min-vw-100 min-vh-100">
@@ -24,6 +24,7 @@
                     <div class="navbar-nav">
                         <a href="/" class="nav-item nav-link">Accueil</a>
                         <a href="/posts" class="nav-item nav-link">Articles</a>
+                        <a href="/about" class="nav-item nav-link">A propos</a>
                     </div>
                     {% if current_connected_user %}
                     <div class="navbar-nav ml-auto">
@@ -35,6 +36,7 @@
                                 {% if current_connected_user.is_admin %}
                                 <a href="/posts/create" class="dropdown-item"><i class="fas fa-plus"></i> Créer un
                                     article</a>
+                                <a href="/admin" class="dropdown-item"><i class="fas fa-users-cog"></i> Administration</a>
                                 {% endif %}
                                 <div class="dropdown-divider"></div>
                                 <a href="/auth/logout" class="dropdown-item"><i class="fas fa-sign-out-alt"></i> Deconnexion</a>

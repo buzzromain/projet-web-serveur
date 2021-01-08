@@ -6,7 +6,7 @@
         <li class="breadcrumb-item"><a href="/">Accueil</a></li>
         <li class="breadcrumb-item active">Articles</li>
     </ol>
-    {% for post in posts %}
+    {% for post in posts[::-1] %}
     <div class="card w-100 mb-2">
         <div class="card-body">
             <h5 class="card-title">{{ post.title }}</h5>

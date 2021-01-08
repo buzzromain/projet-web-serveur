@@ -30,5 +30,5 @@ Ne pas utiliser ces commandes dans l'immédiat.
 - [X] Gérer les exceptions/code de status HTTP
 - [X] Ajouter la modification de ressource "UPDATE"
 - [X] Faire l'interface en HTML/CSS/JS
-- [ ] Ajouter de nouvelles fonctionnalités
-- [ ] Relire le code source en entier
+- [X] Ajouter de nouvelles fonctionnalités
+- [X] Relire le code source en entier

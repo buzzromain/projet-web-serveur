@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<main role="main" style="max-width: 450px;" class="container full-height flex-row flex-grow-1">
+    <div class="shadow p-3 mt-3 bg-white rounded comments-container">
+        <form id="upgrade-user">
+            <label for="user-list" class="form-label">Passer un utilisateur en administrateur</label>
+            <input class="form-control mb-3" list="user-list-options" id="user-list"
+                placeholder="Chercher un utilisateur...">
+            <datalist id="user-list-options">
+                {% for user in users %}
+                {% if user.is_admin == False %}
+                <option value="{{ user.username}}" data-id="{{ user.id}}" />
+                {% endif %}
+                {% endfor %}
+            </datalist>
+            <button id="upgrade-user" class="btn btn-primary mb-3" role="button" type="submit" id="">Valider</button>
+        </form>
+    </div>
+</main>
+{% endblock %}

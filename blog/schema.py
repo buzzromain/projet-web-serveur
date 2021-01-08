@@ -1,10 +1,13 @@
 from marshmallow import Schema, fields
 import datetime
+
 class UserProfileSchema(Schema):
     id = fields.Str()
     username = fields.Str()
     is_admin = fields.Boolean()
     is_banned = fields.Boolean()
+    created_at = fields.Function(lambda obj: obj.created_at)
+    updated_at = fields.Function(lambda obj: obj.updated_at)
     posts = fields.Nested('PostSchema', many=True,
         only=(
             'id',
